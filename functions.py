@@ -101,7 +101,7 @@ def pbook_regex(self):
             pb = float(self[n+1])
             break
         else:
-            pe = None
+            pb = None
         n+=1
     print("Current Price to Book Ratio: ", pb)
     return(pb)
@@ -124,6 +124,25 @@ def pcf_regex(self):
         n+=1
     print("Current Price to Cash Flow Ratio: ", pcf)
     return(pcf)
+
+def ps_regex(self):
+    n=0
+    pslist=[]
+    for line in self:
+        #print(line)
+        try:
+            pslist= re.findall('(Price\sto\sSales\sRatio)',line)
+        except:
+            n+=1
+            continue
+        if len(pslist)>0:
+            ps = float(self[n+1])
+            break
+        else:
+            ps = None
+        n+=1
+    print("Current Price to Sales Ratio: ", ps)
+    return(ps)
 
 def ev_ebitda_regex(self):
     n=0
@@ -179,7 +198,7 @@ def roe_regex(self):
         else:
             roe = None
         n+=1
-    print("Current Price to Earnings Ratio: ", roe)
+    print("Return on Equity: ", roe)
     return(roe)
 
 def tdebt_to_tequity_regex(self):
