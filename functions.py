@@ -2,6 +2,13 @@
 
 import re #RegEx
 from bs4 import BeautifulSoup
+import urllib.request, urllib.parse, urllib.error
+import ssl #foe error handling
+
+# Ignore SSL certificate errors
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
 
 def html_retrieve(self):    #Retrieves html <p> tags from MarketWatch Profile page.
     ls = []
@@ -38,3 +45,21 @@ def industry(self):         #Retrieves industry description from list variable
         if bio != None:
             print('==========='+'Industry'+'==========='+'\n\n'+bio)
     return(bio)
+
+def pe_regex(self):
+    n=0
+    pelist=[]
+    for line in self:
+        #print(line)
+        try:
+            pelist= re.findall('(P/E\sCurrent)',line)
+        except:
+            continue
+        if len(pelist)>0:
+            pe = float(self[n+1][1:])
+            break
+        else:
+            pe = None
+        n+=1
+    print("Current Price to Earnings Ratio: ", pe)
+    return(pe)
