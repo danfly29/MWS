@@ -1,11 +1,14 @@
 import re #For regular expression
 import sqlite3
 from bs4 import BeautifulSoup #For making html file prety
+import time #for pauses
+
 
 from functions import *
 
 class Manager():
-    def read_list():
+
+    def read_list(self):
         hand = open('list.txt','r')
 
     def initiate_db(self):
@@ -15,15 +18,29 @@ class Manager():
          Symbol TEXT UNIQUE, PE  REAL, PS  REAL, PB  REAL, PCF  REAL,
          EVEBITDA REAL, Current  REAL, ROE REAL, DE  REAL, Description TEXT)''')
 
+    def commit(self):
+        conn = sqlite3.connect('mws.sqlite')
+        cur = conn.cursor()
+        conn.commit()
+
     def update(self):
-        cur.execute('''UPDATE SP500_Data2 SET Date = ?,
+        cur.execute('''UPDATE SP500_Data SET Date = ?,
             PE = ?, PCF = ?, PB = ?,  PS = ?,
             EVEBITDA = ?, Current = ?, ROE = ?, DE = ?, Description = ?
             WHERE Symbol = ?
              ''',(self.date,self.pe,self.pcf,self.pb,self.ps,self.ev_ebitda,self.current,self.roe,self.total_ratio, self.industry, self.name))
 
-    def printer(self,ticker,i):
-        print(ticker.date,ticker.pe,ticker.pcf,ticker.pb,ticker.ps,ticker.ev_ebitda,ticker.current,ticker.roe,ticker.total_ratio, ticker.industry, ticker.name,i)
+    def save(self,ticker):
+        conn = sqlite3.connect('mws.sqlite')
+        cur = conn.cursor()
+        cur.execute('''INSERT INTO SP500_Data (Date, Symbol,
+            PE, PCF, PB, PS, EVEBITDA, Current, ROE, DE, Description
+            )
+            VALUES (?,?,?,?,?,?,?,?,?,?,?)
+            ''',(ticker.date, ticker.name, ticker.pe, ticker.pcf, ticker.pb, ticker.ps, ticker.ev_ebitda, ticker.current, ticker.roe, ticker.total_ratio, ticker.industry))
+
+    def printer(self,ticker):
+        print(ticker.date,ticker.pe,ticker.pcf,ticker.pb,ticker.ps,ticker.ev_ebitda,ticker.current,ticker.roe,ticker.total_ratio, ticker.industry, ticker.name)
 
 
 class StockTicker:
@@ -43,16 +60,21 @@ class StockTicker:
 
 manager = Manager()
 manager.initiate_db()
+limit = 50
 
 hand = open('list.txt','r')
-n = 0
+iteration= 0
 for line in hand:
     line = line.rstrip()
     ticker = StockTicker()
     ticker.scrape(line)
-    manager.printer(ticker,n)
+    manager.save(ticker)
 
-    n+=1
-    if n == 2:
-        #manager.commit()
+    iteration += 1
+    if iteration == limit:
+        manager.commit()
         break
+    if iteration%4 == 0 and iteration != 0:
+        print('===================Taking a Nap=====================')
+        manager.commit()
+        time.sleep(120)
