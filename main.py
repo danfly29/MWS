@@ -38,6 +38,10 @@ class Manager():
             )
             VALUES (?,?,?,?,?,?,?,?,?,?,?)
             ''',(ticker.date, ticker.name, ticker.pe, ticker.pcf, ticker.pb, ticker.ps, ticker.ev_ebitda, ticker.current, ticker.roe, ticker.total_ratio, ticker.industry))
+        conn = sqlite3.connect('mws.sqlite')
+        cur = conn.cursor()
+        conn.commit()
+        print('Saved ', ticker.name)
 
     def printer(self,ticker):
         print(ticker.date,ticker.pe,ticker.pcf,ticker.pb,ticker.ps,ticker.ev_ebitda,ticker.current,ticker.roe,ticker.total_ratio, ticker.industry, ticker.name)
@@ -72,9 +76,9 @@ for line in hand:
 
     iteration += 1
     if iteration == limit:
-        manager.commit()
+        #manager.commit()
         break
     if iteration%4 == 0 and iteration != 0:
         print('===================Taking a Nap=====================')
-        manager.commit()
-        time.sleep(120)
+        #manager.commit()
+        time.sleep(30)
