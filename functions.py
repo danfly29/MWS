@@ -60,7 +60,12 @@ def pe_regex(self):
             n+=1
             continue
         if len(pelist)>0:
-            pe = float(self[n+1])
+            try:
+                pe = self[n+1]
+                pe = pe.replace(',','')
+                pe = float(pe)
+            except:
+                pe = None
             break
         else:
             pe = None
@@ -79,7 +84,10 @@ def psale_regex(self):
             n+=1
             continue
         if len(pblist)>0:
-            ps = float(self[n+1])
+            ps = self[n+1]
+            if type(ps) == str:
+                ps = ps.replace(',','')
+            ps = float(ps)
             break
         else:
             ps = None
@@ -98,7 +106,10 @@ def pbook_regex(self):
             n+=1
             continue
         if len(pblist)>0:
-            pb = float(self[n+1])
+            pb = self[n+1]
+            if type(pb) == str:
+                pb = pb.replace(',','')
+            pb = float(pb)
             break
         else:
             pb = None
@@ -117,7 +128,10 @@ def pcf_regex(self):
             n+=1
             continue
         if len(pcflist)>0:
-            pcf = float(self[n+1])
+            pcf = self[n+1]
+            if type(pcf) == str:
+                pcf = pcf.replace(',','')
+            pcf = float(pcf)
             break
         else:
             pcf = None
@@ -136,7 +150,10 @@ def ps_regex(self):
             n+=1
             continue
         if len(pslist)>0:
-            ps = float(self[n+1])
+            ps = self[n+1]
+            if type(ps) == str:
+                ps = ps.replace(',','')
+            ps = float(ps)
             break
         else:
             ps = None
@@ -155,7 +172,10 @@ def ev_ebitda_regex(self):
             n+=1
             continue
         if len(ev_ebitdalist)>0:
-            ev_ebitda = float(self[n+1])
+            ev_ebitda = self[n+1]
+            if type(ev_ebitda) == str:
+                ev_ebitda = ev_ebitda.replace(',','')
+            ev_ebitda = float(ev_ebitda)
             break
         else:
             ev_ebitda = None
@@ -174,7 +194,10 @@ def current_ratio_regex(self):
             n+=1
             continue
         if len(current_list)>0:
-            current_ratio = float(self[n+1])
+            current_ratio = self[n+1]
+            if type(current_ratio) == str:
+                current_ratio = current_ratio.replace(',','')
+            current_ratio = float(current_ratio)
             break
         else:
             current_ratio = None
@@ -193,7 +216,12 @@ def roe_regex(self):
             n+=1
             continue
         if len(roelist)>0:
-            roe = float(self[n+1])
+            roe = self[n+1]
+            try:
+                roe = roe.replace(',','')
+            except:
+                continue
+            roe = float(roe)
             break
         else:
             roe = None
@@ -207,12 +235,17 @@ def tdebt_to_tequity_regex(self):
     for line in self:
         #print(line)
         try:
-            total_ratio_list= re.findall('(P/E\sCurrent)',line)
+            total_ratio_list= re.findall('(Total\sDebt\sto\sTotal\sEquity)',line)
         except:
             n+=1
             continue
         if len(total_ratio_list)>0:
-            total_ratio = float(self[n+1])
+            total_ratio=self[n+1]
+            try:
+                total_ratio = total_ratio.replace(',','')
+            except:
+                continue
+            total_ratio = float(total_ratio)
             break
         else:
             total_ratio = None

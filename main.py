@@ -6,10 +6,18 @@ import time #for pauses
 
 from functions import *
 
-class Manager():
+class Manager:
 
-    def read_list(self):
-        hand = open('list.txt','r')
+
+    def read_names_db(self):
+        conn =sqlite3.connect('mws.sqlite')
+        cur = conn.cursor()
+        cur.execute('SELECT Symbol FROM SP500_Data')
+        list = cur.fetchall()
+        nlist=[]
+        for i in list:
+            nlist.append(i[0])
+        return(nlist)
 
     def initiate_db(self):
         conn = sqlite3.connect('mws.sqlite')
@@ -17,17 +25,22 @@ class Manager():
         cur.execute('''CREATE TABLE IF NOT EXISTS SP500_Data (id INTEGER PRIMARY KEY, Date TEXT,
          Symbol TEXT UNIQUE, PE  REAL, PS  REAL, PB  REAL, PCF  REAL,
          EVEBITDA REAL, Current  REAL, ROE REAL, DE  REAL, Description TEXT)''')
+        self.list = self.read_names_db()
 
     def commit(self):
         conn = sqlite3.connect('mws.sqlite')
         conn.commit()
 
-    def update(self):
+    def update(self,ticker):
+        conn = sqlite3.connect('mws.sqlite')
+        cur = conn.cursor()
         cur.execute('''UPDATE SP500_Data SET Date = ?,
             PE = ?, PCF = ?, PB = ?,  PS = ?,
             EVEBITDA = ?, Current = ?, ROE = ?, DE = ?, Description = ?
             WHERE Symbol = ?
-             ''',(self.date,self.pe,self.pcf,self.pb,self.ps,self.ev_ebitda,self.current,self.roe,self.total_ratio, self.industry, self.name))
+             ''',(ticker.date, ticker.name, ticker.pe, ticker.pcf, ticker.pb, ticker.ps, ticker.ev_ebitda, ticker.current, ticker.roe, ticker.total_ratio, ticker.industry))
+        conn.commit()
+        print('Saved ', ticker.name)
 
     def save(self,ticker):
         conn = sqlite3.connect('mws.sqlite')
@@ -61,15 +74,22 @@ class StockTicker:
 
 manager = Manager()
 manager.initiate_db()
-limit = 50
+manager.list
+limit = 250
 
 hand = open('list.txt','r')
 iteration= 0
 for line in hand:
+    print(line)
     line = line.rstrip()
-    ticker = StockTicker()
-    ticker.scrape(line)
-    manager.save(ticker)
+    if line in manager.list:
+        continue #Could do something once database is filled and need to decide between
+        #updates, new entries or both
+        #manager.update(ticker)
+    else:
+        ticker = StockTicker()
+        ticker.scrape(line)
+        manager.save(ticker)
 
     iteration += 1
     if iteration == limit:
