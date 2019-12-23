@@ -1,26 +1,27 @@
+import sqlite3
+from functions import *
+
 class Manager:
     def interface(self):
         print('Wellcome to your fundamentals screener\n')
         scrape_str = input('Will you be scraping data of the web(y/n):')
-        scrape_str.upper()
-        self.scrape_q = scrape_str
-        if scrape_str == 'Y':
+        self.scrape_q = scrape_str.capitalize()
+        if self.scrape_q == 'Y':
             list_str = input('Will you be using a self-made list(y/n):')
-            list_str.upper()
-            self.list_q = list_str
-            if list_str == 'Y':
+            self.list_q = list_str.capitalize()
+            if self.list_q == 'Y':
                 list_name = input('Type the name of your list-file: \n')
                 self.list_name = list_name
             if list_str == 'N':
                 print('Performing updates')
             try:
-                limit = int(input('How many ticker will you be scraping:'))
-                self.limit
+                limit = input('How many ticker will you be scraping:')
+                self.limit = int(limit)
             except:
                 print('This is awkard, was that a number?')
         if scrape_str == 'N':
             value_type = input('Will you be looking for under or over valued looking instruments(u/o):')
-            valute_type.upper()
+            valute_type.capitalize()
             self.value_type = value_type
 
     def read_names_db(self):
