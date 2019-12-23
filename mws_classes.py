@@ -23,6 +23,7 @@ class Manager:
             value_type = input('Will you be looking for under or over valued looking instruments(u/o):')
             valute_type.capitalize()
             self.value_type = value_type
+        print('Processing\n')
 
     def read_names_db(self):
         conn =sqlite3.connect('mws.sqlite')
@@ -53,7 +54,7 @@ class Manager:
             PE = ?, PCF = ?, PB = ?,  PS = ?,
             EVEBITDA = ?, Current = ?, ROE = ?, DE = ?, Description = ?
             WHERE Symbol = ?
-             ''',(ticker.date, ticker.name, ticker.pe, ticker.pcf, ticker.pb, ticker.ps, ticker.ev_ebitda, ticker.current, ticker.roe, ticker.total_ratio, ticker.industry))
+             ''',(ticker.date, ticker.pe, ticker.pcf, ticker.pb, ticker.ps, ticker.ev_ebitda, ticker.current, ticker.roe, ticker.total_ratio, ticker.industry, ticker.name))
         conn.commit()
         print('Saved ', ticker.name)
 

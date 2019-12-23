@@ -46,7 +46,7 @@ def industry(self):         #Retrieves industry description from list variable
         if bio_exist == False:
             bio = None
         if bio != None:
-            print('==========='+'Industry'+'==========='+'\n\n'+bio)
+            #print('==========='+'Industry'+'==========='+'\n\n'+bio)
     return(bio)
 
 def pe_regex(self):
@@ -70,7 +70,7 @@ def pe_regex(self):
         else:
             pe = None
         n+=1
-    print("Current Price to Earnings Ratio: ", pe)
+    #print("Current Price to Earnings Ratio: ", pe)
     return(pe)
 
 def psale_regex(self):
@@ -92,7 +92,7 @@ def psale_regex(self):
         else:
             ps = None
         n+=1
-    print("Current Price to Sales Ratio: ", ps)
+    #print("Current Price to Sales Ratio: ", ps)
     return(ps)
 
 def pbook_regex(self):
@@ -114,7 +114,7 @@ def pbook_regex(self):
         else:
             pb = None
         n+=1
-    print("Current Price to Book Ratio: ", pb)
+    #print("Current Price to Book Ratio: ", pb)
     return(pb)
 
 def pcf_regex(self):
@@ -136,7 +136,7 @@ def pcf_regex(self):
         else:
             pcf = None
         n+=1
-    print("Current Price to Cash Flow Ratio: ", pcf)
+    #print("Current Price to Cash Flow Ratio: ", pcf)
     return(pcf)
 
 def ps_regex(self):
@@ -158,7 +158,7 @@ def ps_regex(self):
         else:
             ps = None
         n+=1
-    print("Current Price to Sales Ratio: ", ps)
+    #print("Current Price to Sales Ratio: ", ps)
     return(ps)
 
 def ev_ebitda_regex(self):
@@ -180,7 +180,7 @@ def ev_ebitda_regex(self):
         else:
             ev_ebitda = None
         n+=1
-    print("Current EV/EBITDA Ratio: ", ev_ebitda)
+    #print("Current EV/EBITDA Ratio: ", ev_ebitda)
     return(ev_ebitda)
 
 def current_ratio_regex(self):
@@ -202,7 +202,7 @@ def current_ratio_regex(self):
         else:
             current_ratio = None
         n+=1
-    print("Current Ratio: ", current_ratio)
+    #print("Current Ratio: ", current_ratio)
     return(current_ratio)
 
 def roe_regex(self):
@@ -226,7 +226,7 @@ def roe_regex(self):
         else:
             roe = None
         n+=1
-    print("Return on Equity: ", roe)
+    #print("Return on Equity: ", roe)
     return(roe)
 
 def tdebt_to_tequity_regex(self):
@@ -250,7 +250,7 @@ def tdebt_to_tequity_regex(self):
         else:
             total_ratio = None
         n+=1
-    print("Total Debt to Total Equity Ratio: ", total_ratio)
+    #print("Total Debt to Total Equity Ratio: ", total_ratio)
     return(total_ratio)
 
 def day():
