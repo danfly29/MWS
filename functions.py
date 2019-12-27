@@ -45,7 +45,7 @@ def industry(self):         #Retrieves industry description from list variable
             break
         if bio_exist == False:
             bio = None
-        if bio != None:
+        #if bio != None:
             #print('==========='+'Industry'+'==========='+'\n\n'+bio)
     return(bio)
 

@@ -12,8 +12,9 @@ class Manager:
             if self.list_q == 'Y':
                 list_name = input('Type the name of your list-file: \n')
                 self.list_name = list_name
-            if list_str == 'N':
+            if self.list_q == 'N':
                 print('Performing updates')
+                self.list_in_db = self.read_names_for_update()
             try:
                 limit = input('How many ticker will you be scraping:')
                 self.limit = int(limit)
@@ -25,10 +26,10 @@ class Manager:
             self.value_type = value_type
         print('Processing\n')
 
-    def read_names_db(self):
+    def read_names_for_update(self):
         conn =sqlite3.connect('mws.sqlite')
         cur = conn.cursor()
-        cur.execute('SELECT Symbol FROM SP500_Data')
+        cur.execute('SELECT Symbol FROM SP500_Data ORDER BY Date')
         list = cur.fetchall()
         nlist=[]
         for i in list:
@@ -41,7 +42,7 @@ class Manager:
         cur.execute('''CREATE TABLE IF NOT EXISTS SP500_Data (id INTEGER PRIMARY KEY, Date TEXT,
          Symbol TEXT UNIQUE, PE  REAL, PS  REAL, PB  REAL, PCF  REAL,
          EVEBITDA REAL, Current  REAL, ROE REAL, DE  REAL, Description TEXT)''')
-        self.list_in_db = self.read_names_db()
+
 
     def commit(self):
         conn = sqlite3.connect('mws.sqlite')
@@ -71,6 +72,9 @@ class Manager:
 
     def printer(self,ticker):
         print(ticker.date,ticker.pe,ticker.pcf,ticker.pb,ticker.ps,ticker.ev_ebitda,ticker.current,ticker.roe,ticker.total_ratio, ticker.industry, ticker.name)
+
+    def undervalued_screener(self,ticker):
+        
 
 
 class StockTicker:

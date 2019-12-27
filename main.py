@@ -9,6 +9,7 @@ from mws_classes import *
 
 manager = Manager()
 manager.initiate_db()
+manager.interface()
 manager.list_in_db
 manager.interface()
 iteration= 0
@@ -24,3 +25,6 @@ if manager.scrape_q == 'Y':
             if iteration%4 == 0 and iteration != 0:
                 print('===================Taking a Nap=====================')
                 time.sleep(30)
+if manager.scrape_q == 'N':
+    if manager.value_type == 'U':
+        manager.undervalued_screener()
