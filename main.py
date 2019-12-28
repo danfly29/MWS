@@ -24,6 +24,19 @@ if manager.scrape_q == 'Y':
             if iteration%4 == 0 and iteration != 0:
                 print('===================Taking a Nap=====================')
                 time.sleep(30)
+    if manager.list_q == 'Y':
+        for line in manager.list_in_db:
+            ticker.scrape(line)
+            try:
+                manager.update(ticker)
+            except:
+                manager.save(ticker)
+            iteration +=1
+            if iteration == manager.limit:
+                break
+            if iteration%4 == 0 and iteration != 0:
+                print('===================Taking a Nap=====================')
+                time.sleep(30)
 
 if manager.scrape_q == 'N':
     if manager.value_type == 'U':

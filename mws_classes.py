@@ -4,7 +4,7 @@ from functions import *
 class Manager:
     def interface(self):
         print('Wellcome to your fundamentals screener\n')
-        self.list_in_db = self.read_names_for_update()
+
         scrape_str = input('Will you be scraping data of the web(y/n):')
         self.scrape_q = scrape_str.capitalize()
         if self.scrape_q == 'Y':
@@ -12,9 +12,14 @@ class Manager:
             self.list_q = list_str.capitalize()
             if self.list_q == 'Y':
                 list_name = input('Type the name of your list-file: \n')
-                self.list_name = list_name
+                self.list_in_db =[]
+                hand = open(list_name, 'r')
+                for line in hand:
+                    line = line.rstrip()
+                    self.list_in_db.append(line)
             if self.list_q == 'N':
                 print('Performing updates')
+                self.list_in_db = self.read_names_for_update()
             try:
                 limit = input('How many ticker will you be scraping:')
                 self.limit = int(limit)
