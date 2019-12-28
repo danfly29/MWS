@@ -154,11 +154,11 @@ class Manager:
                 return
             numberofnulls -= 1
         if ticker.current != None:
-            if ticker.current*self.value_type_int > self.CurrentRatio*self.value_type_int:
+            if ticker.current*self.value_type_int < self.CurrentRatio*self.value_type_int:
                 return
             numberofnulls -= 1
         if ticker.roe != None:
-            if ticker.roe*self.value_type_int > self.ROE*self.value_type_int:
+            if ticker.roe*self.value_type_int < self.ROE*self.value_type_int:
                 return
             numberofnulls -= 1
         if ticker.total_ratio != None:
