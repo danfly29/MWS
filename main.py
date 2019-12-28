@@ -8,15 +8,14 @@ from mws_classes import *
 
 
 manager = Manager()
+ticker = StockTicker()
 manager.initiate_db()
 manager.interface()
-manager.list_in_db
-manager.interface()
+
 iteration= 0
 if manager.scrape_q == 'Y':
     if manager.list_q == 'N':
         for line in manager.list_in_db:
-            ticker = StockTicker()
             ticker.scrape(line)
             manager.update(ticker)
             iteration +=1
@@ -25,6 +24,16 @@ if manager.scrape_q == 'Y':
             if iteration%4 == 0 and iteration != 0:
                 print('===================Taking a Nap=====================')
                 time.sleep(30)
+
 if manager.scrape_q == 'N':
     if manager.value_type == 'U':
-        manager.undervalued_screener()
+        print(1)
+        for line in manager.list_in_db:
+            ticker.reload(line)
+            manager.screener(ticker)
+        if len(manager.screener_result)>0:
+            print(len(manager.screener_result), 'Passed')
+            print('-----------------------------------------------------')
+            for line in manager.screener_result:
+                ticker.reload(line)
+                manager.printer(ticker)
