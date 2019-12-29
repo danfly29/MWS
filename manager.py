@@ -1,5 +1,4 @@
 import sqlite3
-from stockticker import *
 
 class Manager:
     '''This is a multitasking class ment to decide how the program behave. The

@@ -1,14 +1,13 @@
 import re #For regular expression
 from bs4 import BeautifulSoup #For making html file prety
 import time #for pauses
-
-from stockticker import *
-from manager import *
-
+import stockticker
+import manager
 
 
-manager = Manager()
-ticker = StockTicker()
+
+manager = manager.Manager()
+ticker = stockticker.StockTicker()
 manager.initiate_db()
 manager.interface()
 
@@ -37,7 +36,7 @@ if manager.scrape_q == 'Y':
             if iteration%4 == 0 and iteration != 0:
                 print('===================Taking a Nap=====================')
                 time.sleep(30)
-                
+
 print(1)
 for line in manager.list_of_stocks:
     ticker.reload(line)
