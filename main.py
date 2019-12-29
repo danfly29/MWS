@@ -2,8 +2,8 @@ import re #For regular expression
 from bs4 import BeautifulSoup #For making html file prety
 import time #for pauses
 
-from functions import *
-from mws_classes import *
+from stockticker import *
+from manager import *
 
 
 
@@ -37,15 +37,14 @@ if manager.scrape_q == 'Y':
             if iteration%4 == 0 and iteration != 0:
                 print('===================Taking a Nap=====================')
                 time.sleep(30)
-
-if manager.scrape_q == 'N':
-    print(1)
-    for line in manager.list_of_stocks:
+                
+print(1)
+for line in manager.list_of_stocks:
+    ticker.reload(line)
+    manager.screener(ticker)
+if len(manager.screener_result)>0:
+    print(len(manager.screener_result), 'Passed')
+    print('-----------------------------------------------------')
+    for line in manager.screener_result:
         ticker.reload(line)
-        manager.screener(ticker)
-    if len(manager.screener_result)>0:
-        print(len(manager.screener_result), 'Passed')
-        print('-----------------------------------------------------')
-        for line in manager.screener_result:
-            ticker.reload(line)
-            manager.printer(ticker)
+        manager.printer(ticker)

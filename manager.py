@@ -1,5 +1,5 @@
 import sqlite3
-from functions import *
+from stockticker import *
 
 class Manager:
     '''This is a multitasking class ment to decide how the program behave. The
@@ -237,47 +237,3 @@ class Manager:
         if numberofnulls > 3:
             return
         self.screener_result.append(ticker.name)
-
-
-class StockTicker:
-    '''The attributes of this class are the data entries of a row for a stock in
-    the database. '''
-
-    def scrape(self,i):
-        '''Takes in a name and uses html_retrieve defined in the functions file
-        to get the p tags in the MarketWatch profile of a stock. Then functions
-        using regular expression retrieve what I believe to be the most
-        indicative ratios of financial status and value.'''
-
-        self.name = i
-        self.html = html_retrieve(i)
-        self.industry = industry(self.html)
-        self.pe = pe_regex(self.html)
-        self.pb = pbook_regex(self.html)
-        self.pcf = pcf_regex(self.html)
-        self.ps = ps_regex(self.html)
-        self.ev_ebitda = ev_ebitda_regex(self.html)
-        self.current = current_ratio_regex(self.html)
-        self.roe = roe_regex(self.html)
-        self.total_ratio = tdebt_to_tequity_regex(self.html)
-        self.date = day()
-
-    def reload(self,i):
-        '''The function reload takes in a name and retrieves data out of the
-        existing local database.'''
-
-        conn = sqlite3.connect('mws.sqlite')
-        cur = conn.cursor()
-        self.name = i
-        cur.execute('SELECT * FROM SP500_Data WHERE Symbol = ?',(self.name,))
-        ilist = cur.fetchall()
-        self.date = ilist[0][1]
-        self.pe = ilist[0][3]
-        self.ps = ilist[0][4]
-        self.pb = ilist[0][5]
-        self.pcf = ilist[0][6]
-        self.ev_ebitda = ilist[0][7]
-        self.current = ilist[0][8]
-        self.roe = ilist[0][9]
-        self.total_ratio = ilist[0][10]
-        self.industry = ilist[0][11]
