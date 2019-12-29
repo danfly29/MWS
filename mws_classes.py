@@ -4,7 +4,7 @@ from functions import *
 class Manager:
     def interface(self):
         print('Wellcome to your fundamentals screener\n')
-
+        self.list_in_db = self.read_names_for_update()
         scrape_str = input('Will you be scraping data of the web(y/n):')
         self.scrape_q = scrape_str.capitalize()
         if self.scrape_q == 'Y':
@@ -19,7 +19,6 @@ class Manager:
                     self.list_in_db.append(line)
             if self.list_q == 'N':
                 print('Performing updates')
-                self.list_in_db = self.read_names_for_update()
             try:
                 limit = input('How many ticker will you be scraping:')
                 self.limit = int(limit)
@@ -33,6 +32,7 @@ class Manager:
                 self.undervalued_screener_setup()
             if self.value_type == 'O':
                 self.value_type_int = -1
+                self.overvalued_screener_setup()
         self.screener_result = []
 
         print('Processing\n')
@@ -133,6 +133,47 @@ class Manager:
 
         try:
             self.TotalDebToTotalEquity = float(input('Enter the maximum Total Debt to Total Equity\n  '))
+        except:
+            self.TotalDebToTotalEquity = 50
+
+    def overvalued_screener_setup(self):
+        try:
+            self.PriceToEarnings = float(input('Enter the minimum Price to Earnings Ratio\n  '))
+        except:
+            self.PriceToEarnings = 18
+
+        try:
+            self.PriceToSales = float(input('Enter the minimum Price to Sales Ratio\n  '))
+        except:
+            self.PriceToSales = 2.33
+
+        try:
+            self.PriceToBook = float(input('Enter the minimum Price to Book\n  '))
+        except:
+            self.PriceToBook = 2.86
+
+        try:
+            self.PriceToCashFlow = float(input('Enter the minimum Price to Cash Flow\n  '))
+        except:
+            self.PriceToCashFlow = 12.6
+
+        try:
+            self.EVtoEBITDA = float(input('Enter the minimum Enterprise Value to EBITDA\n  '))
+        except:
+            self.EVtoEBITDA = 10
+
+        try:
+            self.CurrentRatio = float(input('Enter the maximum current Ratio\n  '))
+        except:
+            self.CurrentRatio = 1.2
+
+        try:
+            self.ROE =  float(input('Enter the maximum Return On Equity\n  '))
+        except:
+            self.ROE = 15
+
+        try:
+            self.TotalDebToTotalEquity = float(input('Enter the minimum Total Debt to Total Equity\n  '))
         except:
             self.TotalDebToTotalEquity = 50
 

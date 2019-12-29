@@ -40,6 +40,9 @@ def industry(self):         #Retrieves industry description from list variable
         cnt = cnt + 1
         bio_exist = False
         if cnt == 22:
+            if line == 'P/E Current':
+                bio = 'Error 21'
+                break
             bio = line
             bio_exist = True
             break
