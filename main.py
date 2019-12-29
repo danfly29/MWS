@@ -15,7 +15,7 @@ manager.interface()
 iteration= 0
 if manager.scrape_q == 'Y':
     if manager.list_q == 'N':
-        for line in manager.list_in_db:
+        for line in manager.list_of_stocks:
             ticker.scrape(line)
             manager.update(ticker)
             iteration +=1
@@ -25,7 +25,7 @@ if manager.scrape_q == 'Y':
                 print('===================Taking a Nap=====================')
                 time.sleep(30)
     if manager.list_q == 'Y':
-        for line in manager.list_in_db:
+        for line in manager.list_of_stocks:
             ticker.scrape(line)
             try:
                 manager.update(ticker)
@@ -40,7 +40,7 @@ if manager.scrape_q == 'Y':
 
 if manager.scrape_q == 'N':
     print(1)
-    for line in manager.list_in_db:
+    for line in manager.list_of_stocks:
         ticker.reload(line)
         manager.screener(ticker)
     if len(manager.screener_result)>0:
