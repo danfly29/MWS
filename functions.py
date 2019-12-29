@@ -40,13 +40,16 @@ def industry(self):         #Retrieves industry description from list variable
         cnt = cnt + 1
         bio_exist = False
         if cnt == 22:
+            if line == 'P/E Current':
+                bio = 'Error 21'
+                break
             bio = line
             bio_exist = True
             break
         if bio_exist == False:
             bio = None
-        if bio != None:
-            print('==========='+'Industry'+'==========='+'\n\n'+bio)
+        #if bio != None:
+            #print('==========='+'Industry'+'==========='+'\n\n'+bio)
     return(bio)
 
 def pe_regex(self):
@@ -60,12 +63,17 @@ def pe_regex(self):
             n+=1
             continue
         if len(pelist)>0:
-            pe = float(self[n+1])
+            try:
+                pe = self[n+1]
+                pe = pe.replace(',','')
+                pe = float(pe)
+            except:
+                pe = None
             break
         else:
             pe = None
         n+=1
-    print("Current Price to Earnings Ratio: ", pe)
+    #print("Current Price to Earnings Ratio: ", pe)
     return(pe)
 
 def psale_regex(self):
@@ -79,12 +87,15 @@ def psale_regex(self):
             n+=1
             continue
         if len(pblist)>0:
-            ps = float(self[n+1])
+            ps = self[n+1]
+            if type(ps) == str:
+                ps = ps.replace(',','')
+            ps = float(ps)
             break
         else:
             ps = None
         n+=1
-    print("Current Price to Sales Ratio: ", ps)
+    #print("Current Price to Sales Ratio: ", ps)
     return(ps)
 
 def pbook_regex(self):
@@ -98,12 +109,15 @@ def pbook_regex(self):
             n+=1
             continue
         if len(pblist)>0:
-            pb = float(self[n+1])
+            pb = self[n+1]
+            if type(pb) == str:
+                pb = pb.replace(',','')
+            pb = float(pb)
             break
         else:
-            pe = None
+            pb = None
         n+=1
-    print("Current Price to Book Ratio: ", pb)
+    #print("Current Price to Book Ratio: ", pb)
     return(pb)
 
 def pcf_regex(self):
@@ -117,13 +131,38 @@ def pcf_regex(self):
             n+=1
             continue
         if len(pcflist)>0:
-            pcf = float(self[n+1])
+            pcf = self[n+1]
+            if type(pcf) == str:
+                pcf = pcf.replace(',','')
+            pcf = float(pcf)
             break
         else:
             pcf = None
         n+=1
-    print("Current Price to Cash Flow Ratio: ", pcf)
+    #print("Current Price to Cash Flow Ratio: ", pcf)
     return(pcf)
+
+def ps_regex(self):
+    n=0
+    pslist=[]
+    for line in self:
+        #print(line)
+        try:
+            pslist= re.findall('(Price\sto\sSales\sRatio)',line)
+        except:
+            n+=1
+            continue
+        if len(pslist)>0:
+            ps = self[n+1]
+            if type(ps) == str:
+                ps = ps.replace(',','')
+            ps = float(ps)
+            break
+        else:
+            ps = None
+        n+=1
+    #print("Current Price to Sales Ratio: ", ps)
+    return(ps)
 
 def ev_ebitda_regex(self):
     n=0
@@ -136,12 +175,15 @@ def ev_ebitda_regex(self):
             n+=1
             continue
         if len(ev_ebitdalist)>0:
-            ev_ebitda = float(self[n+1])
+            ev_ebitda = self[n+1]
+            if type(ev_ebitda) == str:
+                ev_ebitda = ev_ebitda.replace(',','')
+            ev_ebitda = float(ev_ebitda)
             break
         else:
             ev_ebitda = None
         n+=1
-    print("Current EV/EBITDA Ratio: ", ev_ebitda)
+    #print("Current EV/EBITDA Ratio: ", ev_ebitda)
     return(ev_ebitda)
 
 def current_ratio_regex(self):
@@ -155,12 +197,15 @@ def current_ratio_regex(self):
             n+=1
             continue
         if len(current_list)>0:
-            current_ratio = float(self[n+1])
+            current_ratio = self[n+1]
+            if type(current_ratio) == str:
+                current_ratio = current_ratio.replace(',','')
+            current_ratio = float(current_ratio)
             break
         else:
             current_ratio = None
         n+=1
-    print("Current Ratio: ", current_ratio)
+    #print("Current Ratio: ", current_ratio)
     return(current_ratio)
 
 def roe_regex(self):
@@ -174,12 +219,17 @@ def roe_regex(self):
             n+=1
             continue
         if len(roelist)>0:
-            roe = float(self[n+1])
+            roe = self[n+1]
+            try:
+                roe = roe.replace(',','')
+            except:
+                continue
+            roe = float(roe)
             break
         else:
             roe = None
         n+=1
-    print("Current Price to Earnings Ratio: ", roe)
+    #print("Return on Equity: ", roe)
     return(roe)
 
 def tdebt_to_tequity_regex(self):
@@ -188,17 +238,22 @@ def tdebt_to_tequity_regex(self):
     for line in self:
         #print(line)
         try:
-            total_ratio_list= re.findall('(P/E\sCurrent)',line)
+            total_ratio_list= re.findall('(Total\sDebt\sto\sTotal\sEquity)',line)
         except:
             n+=1
             continue
         if len(total_ratio_list)>0:
-            total_ratio = float(self[n+1])
+            total_ratio=self[n+1]
+            try:
+                total_ratio = total_ratio.replace(',','')
+            except:
+                continue
+            total_ratio = float(total_ratio)
             break
         else:
             total_ratio = None
         n+=1
-    print("Total Debt to Total Equity Ratio: ", total_ratio)
+    #print("Total Debt to Total Equity Ratio: ", total_ratio)
     return(total_ratio)
 
 def day():
