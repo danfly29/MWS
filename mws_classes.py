@@ -2,6 +2,10 @@ import sqlite3
 from functions import *
 
 class Manager:
+    '''This is a multitasking class ment to decide how the program behave. The
+    attributes serve to hold lists of stocks, the decision/rules of the user,
+    and to push the stock data into the database.'''
+
     def interface(self):
         print('Wellcome to your fundamentals screener\n')
         self.list_in_db = self.read_names_for_update()
@@ -217,6 +221,13 @@ class Manager:
 
 
 class StockTicker:
+    '''The attributes of this class are the data entries of a row for a stock in
+    the database. The function scrape uses html_retrieve defined in the
+    functions file to get the p tags in the MarketWatch profile of a stock. Then
+    functions using regular expression retrieve what I believe to be the most
+    indicative ratios of financial status and value. The function reload just
+    retrieves data out of the existing local database.'''
+
     def scrape(self,i):
         self.name = i
         self.html = html_retrieve(i)
