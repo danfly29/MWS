@@ -21,15 +21,15 @@ class StockTicker:
 
         self.name = i
         self.html = self.html_retrieve(i)
-        self.industry = self.industry(self.html)
-        self.pe = self.pe_regex(self.html)
-        self.pb = self.pbook_regex(self.html)
-        self.pcf = self.pcf_regex(self.html)
-        self.ps = self.ps_regex(self.html)
-        self.ev_ebitda = self.ev_ebitda_regex(self.html)
-        self.current = self.current_ratio_regex(self.html)
-        self.roe = self.roe_regex(self.html)
-        self.total_ratio = self.tdebt_to_tequity_regex(self.html)
+        self.industry = self.industry()
+        self.pe = self.pe_regex()
+        self.pb = self.pbook_regex()
+        self.pcf = self.pcf_regex()
+        self.ps = self.ps_regex()
+        self.ev_ebitda = self.ev_ebitda_regex()
+        self.current = self.current_ratio_regex()
+        self.roe = self.roe_regex()
+        self.total_ratio = self.tdebt_to_tequity_regex()
         self.date = self.day()
 
     def reload(self,i):
@@ -68,13 +68,14 @@ class StockTicker:
             except:
                 continue
             #print(tags) #for troubleshooting
+        #print(ls)
         return(ls)
 
 
-    def industry(self, name):         #Retrieves industry description from list variable
+    def industry(self):         #Retrieves industry description from list variable
                                 #returned by html_retrieve at line 22 (no regex)
         cnt = 0
-        for line in name:
+        for line in self.html:
             #print(line)
             try:
                 line = line.lstrip()
@@ -95,10 +96,10 @@ class StockTicker:
                 #print('==========='+'Industry'+'==========='+'\n\n'+bio)
         return(bio)
 
-    def pe_regex(self, name):
+    def pe_regex(self):
         n=0
         pelist=[]
-        for line in name:
+        for line in self.html:
             #print(line)
             try:
                 pelist= re.findall('(P/E\sCurrent)',line)
@@ -107,7 +108,7 @@ class StockTicker:
                 continue
             if len(pelist)>0:
                 try:
-                    pe = name[n+1]
+                    pe = self.html[n+1]
                     pe = pe.replace(',','')
                     pe = float(pe)
                 except:
@@ -119,10 +120,10 @@ class StockTicker:
         #print("Current Price to Earnings Ratio: ", pe)
         return(pe)
 
-    def psale_regex(self, name):
+    def psale_regex(self):
         n=0
         pslist=[]
-        for line in name:
+        for line in self.html:
             #print(line)
             try:
                 pslist= re.findall('(Price\sto\sSales\sRatio)',line)
@@ -130,7 +131,7 @@ class StockTicker:
                 n+=1
                 continue
             if len(pblist)>0:
-                ps = name[n+1]
+                ps = self.html[n+1]
                 if type(ps) == str:
                     ps = ps.replace(',','')
                 ps = float(ps)
@@ -141,10 +142,10 @@ class StockTicker:
         #print("Current Price to Sales Ratio: ", ps)
         return(ps)
 
-    def pbook_regex(self, name):
+    def pbook_regex(self):
         n=0
         pblist=[]
-        for line in name:
+        for line in self.html:
             #print(line)
             try:
                 pblist= re.findall('(Price\sto\sBook\sRatio)',line)
@@ -152,7 +153,7 @@ class StockTicker:
                 n+=1
                 continue
             if len(pblist)>0:
-                pb = name[n+1]
+                pb = self.html[n+1]
                 if type(pb) == str:
                     pb = pb.replace(',','')
                 pb = float(pb)
@@ -163,10 +164,10 @@ class StockTicker:
         #print("Current Price to Book Ratio: ", pb)
         return(pb)
 
-    def pcf_regex(self, name):
+    def pcf_regex(self):
         n=0
         pcflist=[]
-        for line in name:
+        for line in self.html:
             #print(line)
             try:
                 pcflist= re.findall('(Price\sto\sCash\sFlow\sRatio)',line)
@@ -174,7 +175,7 @@ class StockTicker:
                 n+=1
                 continue
             if len(pcflist)>0:
-                pcf = name[n+1]
+                pcf = self.html[n+1]
                 if type(pcf) == str:
                     pcf = pcf.replace(',','')
                 pcf = float(pcf)
@@ -185,10 +186,10 @@ class StockTicker:
         #print("Current Price to Cash Flow Ratio: ", pcf)
         return(pcf)
 
-    def ps_regex(self, name):
+    def ps_regex(self):
         n=0
         pslist=[]
-        for line in name:
+        for line in self.html:
             #print(line)
             try:
                 pslist= re.findall('(Price\sto\sSales\sRatio)',line)
@@ -196,7 +197,7 @@ class StockTicker:
                 n+=1
                 continue
             if len(pslist)>0:
-                ps = name[n+1]
+                ps = self.html[n+1]
                 if type(ps) == str:
                     ps = ps.replace(',','')
                 ps = float(ps)
@@ -207,10 +208,10 @@ class StockTicker:
         #print("Current Price to Sales Ratio: ", ps)
         return(ps)
 
-    def ev_ebitda_regex(self, name):
+    def ev_ebitda_regex(self):
         n=0
         ev_ebitdalist=[]
-        for line in name:
+        for line in self.html:
             #print(line)
             try:
                 ev_ebitdalist= re.findall('(Enterprise\sValue\sto\sEBITDA)',line)
@@ -218,7 +219,7 @@ class StockTicker:
                 n+=1
                 continue
             if len(ev_ebitdalist)>0:
-                ev_ebitda = name[n+1]
+                ev_ebitda = self.html[n+1]
                 if type(ev_ebitda) == str:
                     ev_ebitda = ev_ebitda.replace(',','')
                 ev_ebitda = float(ev_ebitda)
@@ -229,10 +230,10 @@ class StockTicker:
         #print("Current EV/EBITDA Ratio: ", ev_ebitda)
         return(ev_ebitda)
 
-    def current_ratio_regex(self, name):
+    def current_ratio_regex(self):
         n=0
         current_list=[]
-        for line in name:
+        for line in self.html:
             #print(line)
             try:
                 current_list= re.findall('(Current\sRatio)',line)
@@ -240,7 +241,7 @@ class StockTicker:
                 n+=1
                 continue
             if len(current_list)>0:
-                current_ratio = name[n+1]
+                current_ratio = self.html[n+1]
                 if type(current_ratio) == str:
                     current_ratio = current_ratio.replace(',','')
                 current_ratio = float(current_ratio)
@@ -251,10 +252,10 @@ class StockTicker:
         #print("Current Ratio: ", current_ratio)
         return(current_ratio)
 
-    def roe_regex(self, name):
+    def roe_regex(self):
         n=0
         roelist=[]
-        for line in name:
+        for line in self.html:
             #print(line)
             try:
                 roelist= re.findall('(Return\son\sEquity)',line)
@@ -262,7 +263,7 @@ class StockTicker:
                 n+=1
                 continue
             if len(roelist)>0:
-                roe = name[n+1]
+                roe = self.html[n+1]
                 try:
                     roe = roe.replace(',','')
                 except:
@@ -275,10 +276,10 @@ class StockTicker:
         #print("Return on Equity: ", roe)
         return(roe)
 
-    def tdebt_to_tequity_regex(self, name):
+    def tdebt_to_tequity_regex(self):
         n=0
         total_ratio_list=[]
-        for line in name:
+        for line in self.html:
             #print(line)
             try:
                 total_ratio_list= re.findall('(Total\sDebt\sto\sTotal\sEquity)',line)
@@ -286,7 +287,7 @@ class StockTicker:
                 n+=1
                 continue
             if len(total_ratio_list)>0:
-                total_ratio=name[n+1]
+                total_ratio=self.html[n+1]
                 try:
                     total_ratio = total_ratio.replace(',','')
                 except:
